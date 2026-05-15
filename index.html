@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>최현의 오늘 운세</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at top, #1a0b2e 0%, #0a0418 50%, #000 100%);
+    font-family: 'Georgia', 'Noto Serif KR', serif;
+    color: #e8d5ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(200,180,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 80% 20%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 30% 80%, rgba(180,150,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 90% 50%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 10% 60%, rgba(220,200,255,0.5), transparent);
+    background-size: 200% 200%;
+    animation: twinkle 8s infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: normal;
+    letter-spacing: 0.3em;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #d4a5ff 0%, #fff 50%, #b088ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(180, 130, 255, 0.3);
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: #9d7fc7;
+    letter-spacing: 0.4em;
+    margin-bottom: 3rem;
+    font-style: italic;
+  }
+
+  .card-stage {
+    perspective: 1200px;
+    height: 380px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card {
+    width: 240px;
+    height: 360px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: default;
+  }
+
+  .card.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .card.shuffling {
+    animation: shuffle 0.8s ease-in-out;
+  }
+
+  @keyframes shuffle {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-30px) rotate(-5deg); }
+    50% { transform: translateY(0) rotate(5deg); }
+    75% { transform: translateY(-15px) rotate(-3deg); }
+  }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    border: 2px solid;
+    box-shadow:
+      0 0 40px rgba(168, 85, 247, 0.4),
+      0 0 80px rgba(168, 85, 247, 0.2),
+      inset 0 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card-back {
+    background:
+      linear-gradient(135deg, #2d1b4e 0%, #1a0b2e 100%);
+    border-color: #6b4a8e;
+    background-image:
+      repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(168,85,247,0.05) 10px, rgba(168,85,247,0.05) 20px),
+      linear-gradient(135deg, #2d1b4e 0%, #1a0b2e 100%);
+  }
+
+  .card-back::before {
+    content: '✦';
+    font-size: 5rem;
+    color: #b088ff;
+    text-shadow: 0 0 20px rgba(180, 130, 255, 0.8);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  .card-front {
+    background: linear-gradient(135deg, #2a1845 0%, #1a0b2e 50%, #0f0420 100%);
+    border-color: #c9a4ff;
+    transform: rotateY(180deg);
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-symbol {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 15px rgba(200, 160, 255, 0.8));
+  }
+
+  .card-name {
+    font-size: 1.3rem;
+    color: #e8d5ff;
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(200, 160, 255, 0.3);
+    padding-bottom: 0.8rem;
+    width: 100%;
+  }
+
+  .card-keyword {
+    font-size: 0.95rem;
+    color: #b088ff;
+    font-style: italic;
+    letter-spacing: 0.15em;
+  }
+
+  .message-box {
+    min-height: 100px;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(45, 27, 78, 0.4);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .message-box.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .message-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #e8d5ff;
+    letter-spacing: 0.05em;
+  }
+
+  .draw-btn {
+    background: linear-gradient(135deg, #6b3aa0 0%, #4a2670 100%);
+    color: #fff;
+    border: 1px solid #9d7fc7;
+    padding: 14px 40px;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    font-family: inherit;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:
+      0 0 20px rgba(168, 85, 247, 0.4),
+      inset 0 0 10px rgba(255, 255, 255, 0.05);
+    text-transform: uppercase;
+  }
+
+  .draw-btn:hover {
+    background: linear-gradient(135deg, #7d4ab8 0%, #5a3088 100%);
+    box-shadow:
+      0 0 30px rgba(168, 85, 247, 0.7),
+      inset 0 0 15px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .draw-btn:active {
+    transform: translateY(0);
+  }
+
+  .draw-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .footer-mark {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: #6b4a8e;
+    letter-spacing: 0.3em;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>최현의 오늘 운세</h1>
+    <p class="subtitle">DESTINY OF THE DAY</p>
+
+    <div class="card-stage">
+      <div class="card" id="card">
+        <div class="card-face card-back"></div>
+        <div class="card-face card-front">
+          <div class="card-symbol" id="cardSymbol">✦</div>
+          <div class="card-name" id="cardName">THE STAR</div>
+          <div class="card-keyword" id="cardKeyword">희망과 영감</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-box" id="messageBox">
+      <p class="message-text" id="messageText"></p>
+    </div>
+
+    <button class="draw-btn" id="drawBtn">카드 뽑기</button>
+
+    <p class="footer-mark">✦ ✦ ✦</p>
+  </div>
+
+<script>
+  const cards = [
+    {
+      symbol: '☀',
+      name: 'THE SUN',
+      keyword: '빛과 활력',
+      message: '오늘은 당신의 빛이 가장 밝게 빛나는 날입니다. 자신감을 가지고 행동한다면 주변 사람들에게 긍정적인 에너지를 전할 수 있어요. 망설였던 일을 시작하기에 더없이 좋은 하루.'
+    },
+    {
+      symbol: '☾',
+      name: 'THE MOON',
+      keyword: '직관과 비밀',
+      message: '겉으로 보이는 것이 전부가 아닙니다. 오늘은 직감을 믿어보세요. 누군가의 말 속에 숨겨진 진심을 발견하게 될지도 모릅니다. 조용한 시간 속에서 답을 찾을 수 있는 날.'
+    },
+    {
+      symbol: '✦',
+      name: 'THE STAR',
+      keyword: '희망과 영감',
+      message: '어두운 밤하늘에 별이 빛나듯, 오늘 당신에게 작은 희망이 찾아옵니다. 잊고 있던 꿈을 다시 떠올려 보세요. 당신이 원하는 것은 생각보다 가까이에 있습니다.'
+    },
+    {
+      symbol: '♡',
+      name: 'THE LOVERS',
+      keyword: '인연과 선택',
+      message: '소중한 인연이 가까이 다가옵니다. 마음을 열고 진심으로 대한다면 좋은 관계를 맺을 수 있어요. 두 갈래 길에서 망설인다면, 가슴이 이끄는 쪽을 따르세요.'
+    },
+    {
+      symbol: '⚜',
+      name: 'THE EMPRESS',
+      keyword: '풍요와 창조',
+      message: '당신이 뿌린 씨앗이 결실을 맺기 시작합니다. 창의적인 아이디어가 샘솟는 하루가 될 거예요. 자신을 돌보는 시간도 잊지 마세요. 풍요는 마음의 여유에서 시작됩니다.'
+    },
+    {
+      symbol: '⚔',
+      name: 'THE STRENGTH',
+      keyword: '용기와 인내',
+      message: '두려워하던 일과 마주할 용기가 생기는 날입니다. 부드러움 속에 강함을 품으세요. 큰 소리를 내지 않아도 당신의 의지는 충분히 전달될 것입니다.'
+    },
+    {
+      symbol: '⊛',
+      name: 'THE WHEEL',
+      keyword: '변화와 운명',
+      message: '운명의 수레바퀴가 돌아가고 있습니다. 예상치 못한 변화가 찾아올 수 있지만, 그것은 더 좋은 방향으로의 전환입니다. 흐름에 몸을 맡기되, 기회를 놓치지 마세요.'
+    },
+    {
+      symbol: '✧',
+      name: 'THE WORLD',
+      keyword: '완성과 성취',
+      message: '오랫동안 노력해온 일에 마침표를 찍을 수 있는 날입니다. 작은 성취도 충분히 축하받을 자격이 있어요. 한 챕터의 끝은 새로운 시작을 의미합니다.'
+    }
+  ];
+
+  const card = document.getElementById('card');
+  const cardSymbol = document.getElementById('cardSymbol');
+  const cardName = document.getElementById('cardName');
+  const cardKeyword = document.getElementById('cardKeyword');
+  const messageBox = document.getElementById('messageBox');
+  const messageText = document.getElementById('messageText');
+  const drawBtn = document.getElementById('drawBtn');
+
+  let isAnimating = false;
+
+  drawBtn.addEventListener('click', () => {
+    if (isAnimating) return;
+    isAnimating = true;
+    drawBtn.disabled = true;
+
+    const wasFlipped = card.classList.contains('flipped');
+
+    if (wasFlipped) {
+      card.classList.remove('flipped');
+      messageBox.classList.remove('show');
+    }
+
+    setTimeout(() => {
+      card.classList.add('shuffling');
+    }, wasFlipped ? 600 : 0);
+
+    setTimeout(() => {
+      card.classList.remove('shuffling');
+
+      const picked = cards[Math.floor(Math.random() * cards.length)];
+      cardSymbol.textContent = picked.symbol;
+      cardName.textContent = picked.name;
+      cardKeyword.textContent = picked.keyword;
+      messageText.textContent = picked.message;
+
+      card.classList.add('flipped');
+
+      setTimeout(() => {
+        messageBox.classList.add('show');
+        drawBtn.textContent = '다시 뽑기';
+        drawBtn.disabled = false;
+        isAnimating = false;
+      }, 800);
+    }, wasFlipped ? 1400 : 800);
+  });
+</script>
+</body>
+</html>
